@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ritual Quiz Made By AMAN</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
+        .container { background: #fff; padding: 20px; border-radius: 10px; max-width: 700px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .btn { padding: 10px 20px; border: none; border-radius: 6px; background: #667eea; color: #fff; cursor: pointer; font-size: 16px; }
+        .btn:hover { background: #5569d6; }
+        .option { padding: 12px; background: #f8f8f8; margin: 8px 0; border-radius: 6px; cursor: pointer; border: 2px solid transparent; }
+        .option.correct { border-color: green; }
+        .option.incorrect { border-color: red; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Ritual Foundation Quiz</h2>
+        <div id="quiz-box">
+            <p id="question"></p>
+            <div id="options"></div>
+            <button class="btn" id="nextBtn" onclick="nextQuestion()" disabled>Next</button>
+        </div>
+        <div id="result" style="display:none; font-size:20px; margin-top:20px;"></div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                question: "What is Ritual?",
+                options: ["A blockchain", "A decentralized compute network for AI", "A wallet", "A liquidity protocol"],
+                correct: 1
+            },
+            {
+                question: "What problem does Ritual solve?",
+                options: ["AI compute decentralization", "Video streaming", "Wallet security", "NFT royalties"],
+                correct: 0
+            },
+            {
+                question: "Ritual allows AI models to run on?",
+                options: ["Phones only", "Centralized cloud only", "Decentralized nodes", "Gaming GPUs only"],
+                correct: 2
+            },
+            {
+                question: "Which layer does Ritual introduce?",
+                options: ["AI Co-Processor Layer", "Layer-0", "Liquidity Layer", "Storage Layer"],
+                correct: 0
+            },
+            {
+                question: "What is the core feature of Ritual?",
+                options: ["Private & verifiable AI compute", "Faster mining", "Yield farming", "DEX trading"],
+                correct: 0
+            }
+        ];
+
+        let index = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const q = quizData[index];
+            document.getElementById("question").textContent = q.question;
+
+            let optionsHTML = "";
+            q.options.forEach((opt, i) => {
+                optionsHTML += `<div class='option' onclick='selectOption(${i}, this)'>${opt}</div>`;
+            });
+            document.getElementById("options").innerHTML = optionsHTML;
+            document.getElementById("nextBtn").disabled = true;
+        }
+
+        function selectOption(selected, element) {
+            const correct = quizData[index].correct;
+            const options = document.querySelectorAll('.option');
+
+            options.forEach((opt, i) => {
+                opt.style.pointerEvents = 'none';
+                if (i === correct) opt.classList.add('correct');
+                if (i === selected && selected !== correct) opt.classList.add('incorrect');
+            });
+
+            if (selected === correct) score++;
+            document.getElementById("nextBtn").disabled = false;
+        }
+
+        function nextQuestion() {
+            index++;
+            if (index < quizData.length) {
+                loadQuestion();
+            } else {
+                document.getElementById("quiz-box").style.display = "none";
+                document.getElementById("result").style.display = "block";
+                document.getElementById("result").textContent = `Quiz Completed! Score: ${score}/${quizData.length}`;
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
